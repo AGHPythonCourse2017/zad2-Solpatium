@@ -1,8 +1,8 @@
 import argparse
-from complexity_determinant import ComplexityDeterminant
-import importlib
+from complexity_determinant import complexity, logger
 
 def run():
+    """Command-line interface function"""
     # Parsing arguments
     parser = argparse.ArgumentParser()
 
@@ -13,19 +13,11 @@ def run():
     parser.add_argument('clean', help='Must contain a function called clean_function')
     parser.add_argument('-t', '--timeout', type=int, default=30,
                         help='Max execution time [s]')
-    parser.add_argument('-st', '--single_timeout', type=int, default=10,
-                        help='Max execution time for one problem [s]')
 
     args = parser.parse_args()
-
-    ComplexityDeterminant.TOTAL_TIMEOUT = args.timeout
-    ComplexityDeterminant.SINGLE_TIMEOUT = args.single_timeout
-    complexity_determinant = ComplexityDeterminant.from_files(args.data, args.test, args.clean)
-    if complexity_determinant is None:
-        return
-    else:
-        complexity = complexity_determinant.complexity
-        print(complexity)
+    logger.Logger.minimum_log_level = logger.LoggingLevel.WARN
+    determined_complexity = complexity.determine_from_files(args.data, args.test, args.clean, args.timeout)
+    print(determined_complexity)
 
 # Loaded directly
 if __name__ == "__main__":

@@ -1,9 +1,6 @@
 import math
 from numpy import array, dot, transpose
 from numpy.linalg import inv
-from complexity import Complexity
-from logger import Logger, LoggingLevel
-
 
 class Approximation:
     """Object containing informations about the complexity"""
