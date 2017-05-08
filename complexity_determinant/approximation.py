@@ -1,6 +1,6 @@
-import math
 from numpy import array, dot, transpose
 from numpy.linalg import inv
+
 
 class Approximation:
     """Object containing informations about the complexity"""
@@ -16,7 +16,7 @@ class Approximation:
         # Fill multiplier and values
         for x, y in self.measurements:
             row = []
-            values.append([y]) # [[1],[2],[3]] (1xN)
+            values.append([y])  # [[1],[2],[3]] (1xN)
             for f in self.base:
                 row.append(f(x))
             multiplier.append(row)

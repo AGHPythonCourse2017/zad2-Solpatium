@@ -2,9 +2,11 @@
 from functools import wraps
 import signal
 
+
 class TimeoutExceeded(Exception):
     """Exception thrown when the execution exceeds timeout"""
     pass
+
 
 # Thanks to David Narayan
 # http://stackoverflow.com/questions/2281850/timeout-function-if-it-takes-too-long-to-finish

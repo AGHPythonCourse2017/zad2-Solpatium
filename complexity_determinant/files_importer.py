@@ -1,6 +1,7 @@
 import importlib
 from .logger import Logger, LoggingLevel
 
+
 def properties_from_files(structure_file, tested_file, clean_file):
     """Returns tuple with values to be tested"""
     def module_name(file_name):
@@ -40,11 +41,14 @@ def properties_from_files(structure_file, tested_file, clean_file):
 
         return (structure, function, clean)
     except AttributeError as attribute:
-        Logger.log("Missing test property: {}".format(str(attribute)), LoggingLevel.ERR)
+        Logger.log("Missing test property: {}".format(str(attribute)),
+                   LoggingLevel.ERR)
         return None
     except SyntaxError as syntax:
-        Logger.log("One files has an invalid syntax: {}".format(str(syntax)), LoggingLevel.ERR)
+        Logger.log("One files has an invalid syntax: {}".format(str(syntax)),
+                   LoggingLevel.ERR)
         return None
     except ModuleNotFoundError as not_found:
-        Logger.log("One of files doesn't exist: {}".format(str(not_found)), LoggingLevel.ERR)
+        Logger.log("One of files doesn't exist: {}".format(str(not_found)),
+                   LoggingLevel.ERR)
         return None

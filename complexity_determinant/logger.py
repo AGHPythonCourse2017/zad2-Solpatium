@@ -2,16 +2,19 @@
 from enum import Enum
 import sys
 
+
 class LoggingLevel(Enum):
     """Logging levels for logger"""
     DEBUG = 1
     WARN = 2
     ERR = 3
+
     def __lt__(self, other):
         """Comparator"""
         if self.__class__ is other.__class__:
             return self.value < other.value
         return NotImplemented
+
 
 class LoggingOutput(Enum):
     """Enum used to set logger's output"""
@@ -19,6 +22,7 @@ class LoggingOutput(Enum):
     STDOUT = 1
     STDERR = 2
     NONE = 3
+
 
 class Logger:
     """Simple logger"""
@@ -46,6 +50,3 @@ class Logger:
     def __write_to_file(cls, what):
         with open(cls.logging_file, "a") as file:
             file.write(what)
-
-
-

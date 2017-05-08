@@ -10,6 +10,8 @@ with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 requirements = [
+    'numpy',
+    'scipy'
 ]
 
 test_requirements = [

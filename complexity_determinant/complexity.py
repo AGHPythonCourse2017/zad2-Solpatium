@@ -1,6 +1,4 @@
-"""Complexity class and function choosing the best complexity based on measures"""
 import math
-import timeout_decorator
 from enum import Enum
 from scipy.optimize import newton
 from .approximation import Approximation
@@ -9,11 +7,13 @@ from .timeout import timeout, TimeoutExceeded
 from .timer import Timer
 from .files_importer import properties_from_files
 
+
 class ComplexityLevel(Enum):
     """Available complexities"""
     N = "O(n)"
     NLOGN = "O(nlog(n))"
     N2 = "O(n^2)"
+
     def __str__(self):
         return self.value
 
@@ -38,11 +38,13 @@ class ComplexityLevel(Enum):
             ]
         }
 
+
 class Complexity:
     """Object containing informations about the complexity"""
     def __init__(self, complexity_level, measurements):
         self.complexity_level = complexity_level
-        self.approximation = Approximation(ComplexityLevel.bases()[complexity_level], measurements)
+        base = ComplexityLevel.bases()[complexity_level]
+        self.approximation = Approximation(base, measurements)
 
     def complexity_info(self):
         """Returns most basic info about the complexity"""
@@ -54,8 +56,7 @@ class Complexity:
 
     def max_problem_size_for_time(self, time):
         """Returns max problem size for given time"""
-        function = lambda x: self.approximation(x)-time
-        return newton(function, 5, maxiter=200)
+        return newton(lambda x: self.approximation(x)-time, 5, maxiter=200)
 
     def is_valid(self):
         """
@@ -67,7 +68,8 @@ class Complexity:
             return True
         else:
             epsilon = 10e-10
-            # If the most important factor is not significant at all there is something wrong
+            # If the most important factor is not significant
+            # there is something wrong
             return self.approximation.factors[-1][-1] > epsilon
 
     def __str__(self):
@@ -83,6 +85,7 @@ class Complexity:
             self.complexity_level,
             self.approximation.mean_squared_error
         )
+
 
 def determine(structure, test, clean_function, max_execution=30):
     """Measures execution times and returns complexity object"""
@@ -112,7 +115,8 @@ def determine(structure, test, clean_function, max_execution=30):
             try:
                 measurements[size] = execute_function(problem)
             except TestedFunctionError:
-                Logger.log("Raised exception for problem size {}.".format(size), LoggingLevel.ERR)
+                Logger.log("Raised exception for size {}.".format(size),
+                           LoggingLevel.ERR)
 
     try:
         measurements = {}
@@ -123,8 +127,9 @@ def determine(structure, test, clean_function, max_execution=30):
 
     clean_function()
 
-    measurements = list(measurements.items()) # List of tuples
+    measurements = list(measurements.items())  # List of tuples
     return best_complexity(measurements)
+
 
 def determine_from_files(structure, test, clean, timeout=30):
     """Wrapper around determine, reads all needed data from files"""
@@ -133,6 +138,7 @@ def determine_from_files(structure, test, clean, timeout=30):
         Logger.log("Structure or functions don't exist", LoggingLevel.ERR)
         return None
     return determine(imported[0], imported[1], imported[2], timeout)
+
 
 def best_complexity(measurements):
     """Returns the best complexity based on measurements"""
